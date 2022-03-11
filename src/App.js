@@ -1,23 +1,102 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Button from "./Button";
+import Input from "./InputNum"
+import Operator from "./Operator";
+import Diplay from './Display';
+
+import Image from "./Image";
+
 
 function App() {
+
+  const [cal, setCal] = useState({
+    val1: '',
+    val2: '',
+    opt: '',
+    result: '',
+  });
+
+  function calculate() {
+    // console.log(cal.opt);
+    // console.log(cal.val2);
+    // console.log(cal.val1);
+  var maths = '';
+
+    switch (cal.opt) {
+      case '+':
+        maths = parseFloat(cal.val1) + parseFloat(cal.val2);
+        break;
+
+      case '-':
+        maths = cal.val1 - cal.val2;
+        break;
+
+      case '*':
+        maths = cal.val1 * cal.val2;
+        break;
+
+      case '/':
+        maths = cal.val1 / cal.val2;
+        break;
+
+        default:
+
+          break;
+    
+    }
+
+    setCal(
+      (prev) => {
+        return {
+          ...prev,
+          result: maths
+        }
+      }
+    )
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Input changeEventHandler={
+        (event) => {
+          setCal(
+            (prev) => {
+              return {
+                ...prev,
+                val1: event.target.value
+              }
+            }
+          )
+        }
+      } />
+
+      <Operator changeEventOpt={
+        (event) => {
+          setCal(
+            (prev) => {
+              return {
+                ...prev,
+                opt: event.target.value
+              }
+            }
+          )
+        }
+      } />
+
+      <Input changeEventHandler={
+        (event) => {
+          setCal(
+            (prev) => {
+              return {
+                ...prev,
+                val2: event.target.value
+              }
+            }
+          )
+        }} />
+      <Button caption="Calc" eventHandler={calculate} />
+
+      <Diplay calResult={cal.result}/>
     </div>
   );
 }
